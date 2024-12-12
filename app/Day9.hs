@@ -1,5 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE PartialTypeSignatures #-}
+{-# OPTIONS_GHC -Wno-partial-type-signatures #-}
 
 module Day9 where
 
@@ -39,9 +40,9 @@ defragment blocks = assocs $ runSTArray $ do
 part1 :: String -> Int
 part1 = checksum . defragment . prepare (\len b bs -> replicate len b <> bs)
   where
-    checksum = sum . map score
-    score (_, Free) = 0
-    score (pos, (File num)) = pos * num
+    checksum = sum . map score_
+    score_ (_, Free) = 0
+    score_ (pos, File num) = pos * num
 
 indexBlocks :: [Chunk] -> [(Int, Chunk)]
 indexBlocks = snd . mapAccumL go 0
@@ -58,7 +59,7 @@ part2 input = runST $ do
     (ix, Chunk len Free) <- blocks
     guard $ len >= 1
     pure $ modifyArray' freeHeaps len (H.insert ix)
-  let firstFreeBlock :: Int -> ST _ (Maybe (Int, (Int, (H.Heap Int))))
+  let firstFreeBlock :: Int -> ST _ (Maybe (Int, (Int, H.Heap Int)))
       firstFreeBlock size = fmap (size,) . H.viewMin <$> readArray freeHeaps size
       moveLeft orig@(FileData ix len num) = do
         firsts <- catMaybes <$> traverse firstFreeBlock [len .. 9]
@@ -71,7 +72,7 @@ part2 input = runST $ do
   sum . map score <$> traverse moveLeft inputFiles
 
 score :: FileData -> Int
-score (FileData ix len file) = file * (sum [ix .. ix + len - 1])
+score (FileData ix len file) = file * sum [ix .. ix + len - 1]
 
 prepare :: (Int -> Block -> [a] -> [a]) -> String -> [a]
 prepare f = file 0 . map digitToInt . filter isDigit
