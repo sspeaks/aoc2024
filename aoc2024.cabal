@@ -75,7 +75,6 @@ executable aoc2024
       , Day11
       , Day12
       , Day13
-      , Day12
       , Day13
       , Day17
 
