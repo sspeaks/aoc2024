@@ -74,6 +74,7 @@ executable aoc2024
       , Day10
       , Day11
       , Day12
+      , Day13
       , Day17
 
     -- LANGUAGE extensions used by modules in this package.
@@ -88,6 +89,7 @@ executable aoc2024
                     , heaps
                     , MemoTrie
                     , mtl
+                    , regex-applicative
 
     -- Directories containing source files.
     hs-source-dirs:   app
