@@ -43,7 +43,7 @@ part2 = solve . map (shiftGoalposts 10000000000000)
 prepare :: String -> Input
 prepare = maybe (error "no parse") id . match input
   where
-    input = many (machine <* (optional $ string "\n"))
+    input = many (machine <* optional (string "\n"))
     machine = Machine <$> line "Button A" "+" <*> line "Button B" "+" <*> line "Prize" "="
     line label op =
       (,)

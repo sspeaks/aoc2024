@@ -28,6 +28,6 @@ main = do
   -- putStr "Day9: " >> Day9.main
   -- putStr "Day10: " >> Day10.main
   -- putStr "Day11: " >> Day11.main
-  putStr "Day12: " >> Day12.main
-  putStr "Day17: " >> Day17.main
+  -- putStr "Day12: " >> Day12.main
+  -- putStr "Day17: " >> Day17.main
   putStr "Day13: " >> Day13.main
