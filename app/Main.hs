@@ -2,10 +2,11 @@ module Main where
 
 import Day1 qualified
 import Day10 qualified
-import Day12
 import Day11 qualified
+import Day12
 import Day13 qualified
 import Day17 qualified
+import Day14 qualified
 import Day2 qualified
 import Day3 qualified
 import Day4 qualified
@@ -30,4 +31,5 @@ main = do
   -- putStr "Day11: " >> Day11.main
   -- putStr "Day12: " >> Day12.main
   -- putStr "Day17: " >> Day17.main
-  putStr "Day13: " >> Day13.main
+  -- putStr "Day13: " >> Day13.main
+  putStr "Day14: " >> Day14.main
