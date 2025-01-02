@@ -7,6 +7,7 @@ import Day12
 import Day13 qualified
 import Day14 qualified
 import Day17 qualified
+import Day19 qualified
 import Day2 qualified
 import Day22 qualified
 import Day3 qualified
@@ -34,4 +35,5 @@ main = do
   -- putStr "Day17: " >> Day17.main
   -- putStr "Day13: " >> Day13.main
   -- putStr "Day14: " >> Day14.main
-  putStr "Day22: " >> Day22.main
+  -- putStr "Day22: " >> Day22.main
+  putStr "Day19: " >> Day19.main
