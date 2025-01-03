@@ -57,6 +57,12 @@ executable aoc2024
     -- Import common warning flags.
     import:           warnings
 
+    ghc-options:
+      -threaded
+      -rtsopts
+      -fprof-auto
+      "-with-rtsopts=-N"
+
     -- .hs or .lhs file containing the Main module.
     main-is:          Main.hs
 
@@ -94,6 +100,7 @@ executable aoc2024
                     , MemoTrie
                     , mtl
                     , regex-applicative
+                    , parallel
 
     -- Directories containing source files.
     hs-source-dirs:   app

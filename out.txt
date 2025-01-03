@@ -1,0 +1,82 @@
+Build profile: -w ghc-9.6.5 -O1
+In order, the following will be built (use -v for more details):
+ - aoc2024-0.1.0.0 (exe:aoc2024) (file app/Day19.hs changed)
+Preprocessing executable 'aoc2024' for aoc2024-0.1.0.0..
+Building executable 'aoc2024' for aoc2024-0.1.0.0..
+[ 8 of 18] Compiling Day19            ( app/Day19.hs, /home/sspeaks/wsl_projects/aoc2024/dist-newstyle/build/x86_64-linux/ghc-9.6.5/aoc2024-0.1.0.0/x/aoc2024/build/aoc2024/aoc2024-tmp/Day19.o ) [Source file changed]
+
+app/Day19.hs:4:1: warning: [-Wunused-imports]
+    The import of ‘Control.Monad’ is redundant
+      except perhaps to import instances from ‘Control.Monad’
+    To import instances alone, use: import Control.Monad()
+  |
+4 | import Control.Monad (guard)
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+app/Day19.hs:6:20: warning: [-Wunused-imports]
+    The import of ‘catMaybes’ from module ‘Data.Maybe’ is redundant
+  |
+6 | import Data.Maybe (catMaybes, mapMaybe)
+  |                    ^^^^^^^^^
+
+app/Day19.hs:7:1: warning: [-Wunused-imports]
+    The import of ‘Data.Traversable’ is redundant
+      except perhaps to import instances from ‘Data.Traversable’
+    To import instances alone, use: import Data.Traversable()
+  |
+7 | import Data.Traversable (for)
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+app/Day19.hs:9:39: warning: [-Wunused-imports]
+    The import of ‘anyChar’ from module ‘Text.Parsec’ is redundant
+  |
+9 | import Text.Parsec (Parsec, alphaNum, anyChar, many1, runParser, sepBy, spaces, string)
+  |                                       ^^^^^^^
+[19 of 19] Linking /home/sspeaks/wsl_projects/aoc2024/dist-newstyle/build/x86_64-linux/ghc-9.6.5/aoc2024-0.1.0.0/x/aoc2024/build/aoc2024/aoc2024 [Objects changed]
+[([Black],[Red,White,Red,Red]),([Black,Red],[White,Red,Red])]
+[([Red],[White,Red,Red])]
+[([White,Red],[Red])]
+[([Red],[])]
+[([White,Red],[Red])]
+[([Red],[])]
+[([Black],[Green,Green,Red])]
+[([Green],[Green,Red])]
+[([Green],[Red])]
+[([Red],[])]
+[([Green],[Black,Black,Red]),([Green,Black],[Black,Red])]
+[([Black],[Black,Red])]
+[([Black],[Red]),([Black,Red],[])]
+[([Red],[])]
+[([Black],[Red]),([Black,Red],[])]
+[([Red],[])]
+[([Red],[Red,Black,Green,Black,Red])]
+[([Red],[Black,Green,Black,Red]),([Red,Black],[Green,Black,Red])]
+[([Black],[Green,Black,Red])]
+[([Green],[Black,Red]),([Green,Black],[Red])]
+[([Black],[Red]),([Black,Red],[])]
+[([Red],[])]
+[([Red],[])]
+[([Green],[Black,Red]),([Green,Black],[Red])]
+[([Black],[Red]),([Black,Red],[])]
+[([Red],[])]
+[([Red],[])]
+[]
+[([Black],[White,Blue,Red,Red,Green]),([Black,White,Blue],[Red,Red,Green])]
+[]
+[([Red],[Red,Green])]
+[([Red],[Green])]
+[([Green],[])]
+[([Black],[Red,Green,Red]),([Black,Red],[Green,Red])]
+[([Red],[Green,Red])]
+[([Green],[Red])]
+[([Red],[])]
+[([Green],[Red])]
+[([Red],[])]
+[([Black],[Black,Red,Green,White,Black])]
+[([Black],[Red,Green,White,Black]),([Black,Red],[Green,White,Black])]
+[([Red],[Green,White,Black])]
+[([Green],[White,Black])]
+[]
+[([Green],[White,Black])]
+[]
+Day19: ([[],[],[],[],[],[],[],[]],())
