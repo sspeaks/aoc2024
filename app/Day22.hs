@@ -3,13 +3,27 @@ module Day22 where
 import Control.Arrow ((&&&))
 import Data.Bits (Bits (..))
 import Data.Char (intToDigit)
-import Data.List (intercalate)
+import Data.Function (on)
+import Data.List (intercalate, maximumBy)
+import Data.Map qualified as M
 import Data.Word (Word32)
 import Debug.Trace (trace)
 import Numeric (showIntAtBase)
 import Text.Parsec (Parsec, newline, runParser, sepBy)
 import Text.Parsec.Char (digit)
 import Text.Parsec.Combinator (many1)
+
+-- Function to generate all subsequences of length 'k' from a list 'xs'
+
+subsequencesOfSize :: Int -> [a] -> [[a]]
+subsequencesOfSize n xs =
+  let l = length xs
+   in if n > l then [] else subsequencesBySize xs !! (l - n)
+  where
+    subsequencesBySize [] = [[[]]]
+    subsequencesBySize (x : xs) =
+      let next = subsequencesBySize xs
+       in zipWith (++) ([] : next) (map (map (x :)) next ++ [[]])
 
 type Parser = Parsec String ()
 
@@ -40,14 +54,25 @@ f secret =
       mixPruned3 = mixPrune bigShift mixPruned2
    in btrace (intercalate "\n" . map wordToBinary $ [secret, shifted, mixPruned1, backShifted, mixPruned2, bigShift, mixPruned3]) mixPruned3
 
+getSequence :: Int -> Word32 -> [Int]
+getSequence n = reverse . diff . reverse . take (n + 1) . map ((`mod` 10) . fromIntegral) . iterate f
+  where
+    diff :: (Num a) => [a] -> [a]
+    diff [] = []
+    diff [_] = []
+    diff (x : y : xs) = (x - y) : diff (y : xs)
+
 nthSecret :: Int -> Word32 -> Word32
 nthSecret n w = (!! n) $ iterate f w
 
 part1 :: Input -> Integer
 part1 = sum . map (fromIntegral . nthSecret 2000)
 
-part2 :: Input -> ()
-part2 _ = ()
+part2 :: Input -> M.Map [Int] Int
+part2 = M.unionsWith (+) . map (convertToMap . subsequencesOfSize 4 . getSequence 2000)
+
+convertToMap :: [[Int]] -> M.Map [Int] Int
+convertToMap ls = M.fromList [(xs, 1) | xs <- ls]
 
 prepare :: String -> Input
 prepare inp = case runParser parser () "" inp of
