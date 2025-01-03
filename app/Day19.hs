@@ -1,18 +1,15 @@
+{-# LANGUAGE BangPatterns #-}
+
 module Day19 where
 
 import Control.Arrow ((&&&))
-import Control.Monad (guard)
-import Control.Parallel.Strategies (NFData, parMap, rdeepseq, rseq)
+import Control.Monad.State qualified as ST
 import Data.List (isPrefixOf)
-import Data.Maybe (catMaybes, mapMaybe)
-import Data.Traversable (for)
-import Debug.Trace (trace)
+import Data.Map qualified as M
 import GHC.Generics (Generic)
-import Text.Parsec (Parsec, alphaNum, anyChar, many1, runParser, sepBy, spaces, string)
+import Text.Parsec (Parsec, alphaNum, many1, runParser, sepBy, spaces, string)
 
-data Color = White | Blue | Black | Red | Green deriving (Show, Eq, Generic)
-
-instance NFData Color
+data Color = White | Blue | Black | Red | Green deriving (Show, Eq, Generic, Ord)
 
 type TargetDesign = [Color]
 
@@ -23,35 +20,37 @@ type Parser = Parsec String ()
 type Input = ([TowelPattern], [TargetDesign])
 
 part1 :: Input -> Int
-part1 inp = let !res = f inp in length . filter (not . null) $ res
+part1 (patts, dess) = length . filter (> 0) . map (solutionsPerDesign patts) $ dess
+
+part2 :: Input -> Int
+part2 (patts, dess) = sum . map (solutionsPerDesign patts) $ dess
+
+solutionsPerDesign :: [TowelPattern] -> TargetDesign -> Int
+solutionsPerDesign patts design = ST.evalState (f design) M.empty
   where
-    f (!patts, !designs) = map (f' patts) designs
-    f' :: [TowelPattern] -> TargetDesign -> [[TowelPattern]]
-    f' [] _ = error "should never have 0 patterns"
-    f' _ [] = []
-    f' patts design =
-      let a = mapMaybe (g design) patts 
-          x =
-            mapMaybe
-              mapped
-              a
-       in map head x
-      where
-        mapped :: (TowelPattern, TargetDesign) -> Maybe [[TowelPattern]]
-        mapped (p, []) = let v = Just [[p]] in trace (show v) v
-        mapped (p, d) = case f' patts d of
-          [] -> trace ( "Nothing") Nothing
-          workings -> let v = Just $ (:) <$> [p] <*> workings in trace (show v) v
-    g :: TargetDesign -> TowelPattern -> Maybe (TowelPattern, TargetDesign)
-    g [] _ = Nothing
-    g d p
-      | p `isPrefixOf` d = let !v = Just (p, drop (length p) d) in trace (show v) v
-      | otherwise = Nothing
+    f :: TargetDesign -> ST.State (M.Map TargetDesign Int) Int
+    f [] = return 1
+    f des = do
+      !seen <- ST.gets (M.lookup des)
+      case seen of
+        (Just v) -> return v
+        Nothing -> do
+          let !workingPatts = filter (`isPrefixOf` des) patts
+          !viableSuffixCount <- sum <$> mapM (\p -> f $ drop (length p) des) workingPatts
+          ST.modify (M.insert des viableSuffixCount)
+          return viableSuffixCount
 
--- length . filter (not . null) $
+type Solution = [TowelPattern]
 
-part2 :: Input -> ()
-part2 _ = ()
+-- Brute force solution
+f' :: [TowelPattern] -> TargetDesign -> [Solution]
+f' patts des =
+  [ patt : rest
+    | patt <- patts,
+      patt `isPrefixOf` des,
+      let tailOf = drop (length patt) des,
+      rest <- f' patts tailOf
+  ]
 
 prepare :: String -> Input
 prepare inp = case runParser parser () "" inp of

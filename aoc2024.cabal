@@ -100,7 +100,6 @@ executable aoc2024
                     , MemoTrie
                     , mtl
                     , regex-applicative
-                    , parallel
 
     -- Directories containing source files.
     hs-source-dirs:   app
