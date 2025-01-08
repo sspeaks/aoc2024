@@ -87,6 +87,7 @@ executable aoc2024
       , Day14
       , Day22
       , Day23
+      , Day15
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -102,6 +103,7 @@ executable aoc2024
                     , mtl
                     , regex-applicative
                     , clique
+                    , grid
 
     -- Directories containing source files.
     hs-source-dirs:   app
@@ -117,4 +119,13 @@ library clique
 
     exposed-modules: Clique
     hs-source-dirs: lib/clique
+    default-language: GHC2021
+
+library grid
+    build-depends:    base ^>=4.18.2.1
+                    , containers
+                    , vector
+                    , array
+    exposed-modules: Grid
+    hs-source-dirs: lib/grid
     default-language: GHC2021

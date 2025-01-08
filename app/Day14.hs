@@ -1,7 +1,5 @@
 module Day14 where
 
-import Control.Arrow ((&&&))
-import Control.Concurrent (threadDelay)
 import Control.Monad (forM_)
 import Data.Char (intToDigit)
 import Data.List (group, intercalate, sort, sortBy)
