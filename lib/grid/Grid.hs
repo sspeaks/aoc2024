@@ -6,7 +6,7 @@ import Data.Array.IArray qualified as A
 import Data.Array.ST (STArray, modifyArray', readArray, runSTArray, thaw, writeArray)
 import Data.Function (on)
 import Data.List (sortBy)
-import Debug.Trace (trace)
+import Data.Set qualified as S
 
 data Direction = N | S | E | W deriving (Show, Eq)
 
@@ -90,3 +90,17 @@ compareCoords :: (Int, Int) -> (Int, Int) -> Ordering
 compareCoords (a, b) (c, d)
   | b == d = compare a c
   | otherwise = compare b d
+
+data AStarNode where
+  Node :: (Ord cost, Monoid cost) => cost -> Maybe AStarNode -> AStarNode
+
+aStar ::
+  (Ord b, Monoid b) =>
+  a -> -- Starting location
+  (a -> [(a, b)]) -> -- Given a node, give it's possible moves and their costs
+  (a -> b) -> -- Heuristic function that gives, for example, distance from start to
+  AStarNode
+aStar start neighbors heuristicDistance = go start S.empty
+  where
+    go :: a -> S.Set a -> AStarNode
+    go curr s = undefined
