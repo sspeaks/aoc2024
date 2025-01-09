@@ -107,7 +107,8 @@ astar ::
   -- | The goal node.
   node ->
   -- | The function to get the next nodes and their costs from a given node.
-  (node -> [(node, cost)]) ->
+  --   The Maybe node is the node it came from, in case that's important for determining the cost
+  ((Maybe node, node) -> [(node, cost)]) ->
   -- | The heuristic function to estimate the cost of going from a given node to
   --   the goal node.
   (node -> node -> cost) ->
@@ -150,12 +151,13 @@ astar startNode goalNode nextNodes heuristic =
       -- Else visit the current node and continue.
       | otherwise =
           let -- Add the current node to the visited set.
+              fromNode = node `Map.lookup` tracks
               visited' = Set.insert node visited
               -- Find the successor nodes of the current node that have not been
               -- visited yet, along with their costs and heuristic costs.
               successors =
                 [ (node', cost', heuristic node' goalNode)
-                  | (node', nodeCost) <- nextNodes node, -- Get next nodes.
+                  | (node', nodeCost) <- nextNodes (fromNode, node), -- Get next nodes.
                     node' `Set.notMember` visited', -- Keep only unvisited ones.
                     let cost' = cost <> nodeCost, -- Cost of the next node.
                     -- Keep only unvisited nodes, or previously visited nodes now
@@ -203,7 +205,7 @@ res = astar start goal neighbors heuristic
   where
     start = (0, 0)
     goal = (4, 4)
-    neighbors c@(x, y) =
+    neighbors (_, c@(x, y)) =
       map (\c -> (c, Sum . digitToInt . fromJust $ gridLookup c testGrid)) $
         filter
           (inBounds testGrid)
