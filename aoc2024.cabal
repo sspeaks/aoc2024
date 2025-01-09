@@ -124,8 +124,8 @@ library clique
 library grid
     build-depends:    base ^>=4.18.2.1
                     , containers
-                    , vector
                     , array
+                    , pqueue
     exposed-modules: Grid
     hs-source-dirs: lib/grid
     default-language: GHC2021
