@@ -1,10 +1,11 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use newtype instead of data" #-}
 module Day22 where
 
 import Control.Arrow ((&&&))
 import Data.Bits (Bits (..))
 import Data.Char (intToDigit)
-import Data.Function (on)
-import Data.List (intercalate, maximumBy)
+import Data.List (intercalate)
 import Data.Map qualified as M
 import Data.Word (Word32)
 import Debug.Trace (trace)
@@ -65,11 +66,26 @@ getSequence n = reverse . diff . reverse . take (n + 1) . map ((`mod` 10) . from
 nthSecret :: Int -> Word32 -> Word32
 nthSecret n w = (!! n) $ iterate f w
 
+seqe :: Integral a =>  [a] -> [a]
+seqe [] = []
+seqe xs = scanl (\_ (a,b) -> b - a) 0 (zip xs' (tail xs')) where
+  xs' = map (`mod` 10) xs
+
 part1 :: Input -> Integer
 part1 = sum . map (fromIntegral . nthSecret 2000)
 
-part2 :: Input -> M.Map [Int] Int
-part2 = M.unionsWith (+) . map (convertToMap . subsequencesOfSize 4 . getSequence 2000)
+part2 :: Input -> [Int]
+part2 _ = seqe $ map (\n -> fromIntegral $ nthSecret n 123) [0..9]
+
+-- Going to try my hand at a hylomorphism....
+newtype Fix f = In { out :: f (Fix f) }
+data TrieF b = TrieF [(Int, Int, b)] deriving (Show, Functor)
+cata :: Functor f => (f a -> a) -> Fix f -> a
+cata alg = alg . fmap (cata alg) . out
+ana :: Functor f => (a -> f a) -> a -> Fix f
+ana coalg = In . fmap (ana coalg) . coalg
+hylo :: Functor f => (a -> f a) -> (f b -> b) -> a -> b
+hylo coalg alg = go where go = alg . fmap go . coalg 
 
 convertToMap :: [[Int]] -> M.Map [Int] Int
 convertToMap ls = M.fromList [(xs, 1) | xs <- ls]

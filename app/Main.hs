@@ -38,7 +38,11 @@ main = do
   -- putStr "Day17: " >> Day17.main
   -- putStr "Day13: " >> Day13.main
   -- putStr "Day14: " >> Day14.main
-  -- putStr "Day22: " >> Day22.main
+  putStr "Day22: " >> Day22.main
   -- putStr "Day19: " >> Day19.main
   -- putStr "Day 23: " >> Day23.main
+<<<<<<< Updated upstream
   putStr "Day 16: " >> Day16.main
+=======
+  -- putStr "Day 15: " >> Day15.main
+>>>>>>> Stashed changes
