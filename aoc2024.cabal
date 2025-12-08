@@ -94,7 +94,7 @@ executable aoc2024
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.18.2.1
+    build-depends:    base ^>=4.19
                     , parsec
                     , containers
                     , array
@@ -113,7 +113,7 @@ executable aoc2024
     default-language: GHC2021
 
 library clique
-    build-depends:    base ^>=4.18.2.1
+    build-depends:    base ^>=4.19
                     , containers
                     , vector
                     , array
@@ -123,10 +123,19 @@ library clique
     default-language: GHC2021
 
 library grid
-    build-depends:    base ^>=4.18.2.1
+    build-depends:    base ^>=4.19
                     , containers
                     , array
                     , pqueue
     exposed-modules: Grid
     hs-source-dirs: lib/grid
+    default-language: GHC2021
+  
+library graph
+    build-depends:    base ^>=4.19
+                    , containers
+                    , array
+                    , pqueue
+    exposed-modules: Graph
+    hs-source-dirs: lib/graph
     default-language: GHC2021
